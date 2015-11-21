@@ -33,7 +33,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        $cache = Yii::$app->getCache();
+        $cache->keyPrefix = 'login-';
+        $login = $cache->get('login-'.$token);
+        if($login === false) {
+            $login = static::findOne(['access_token' => $token]);
+            $cache->set('login-'.$token, $login);
+        }
+        return $login;
     }
 
     /**

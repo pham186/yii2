@@ -10,7 +10,6 @@ $this->title = 'User Detail';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 echo date('h:i:sA d-m-Y');
-var_dump(Yii::$app->user->identity);
 ?>
 <div class="user-view">
 

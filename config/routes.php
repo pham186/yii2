@@ -6,7 +6,12 @@
  * and open the template in the editor.
  */
 $modules = require(__DIR__ . '/modules.php');
-$route = [];
+$route = [
+        [
+            'class' => 'yii\rest\UrlRule',
+            'controller' => 'post/api',   // our country api rule,
+        ]
+    ];
 foreach ($modules as $m=>$param) {
     $path = realpath(dirname(__FILE__)).'/../modules/'.$m.'/routes.php';
     if(file_exists($path)) {
