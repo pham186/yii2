@@ -25,4 +25,10 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+# all cache file
 *.cache
+*.bin
+
+# assets dir
+/assets

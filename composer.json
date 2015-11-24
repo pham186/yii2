@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "mpdf/mpdf": "dev-master",
         "yiisoft/yii2-imagine": "dev-master",
-        "phpmailer/phpmailer": "dev-master"
+        "phpmailer/phpmailer": "dev-master",
+        "eonasdan/bootstrap-datetimepicker": "4.17.37"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

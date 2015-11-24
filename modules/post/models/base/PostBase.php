@@ -10,6 +10,17 @@ use Yii;
  * @property integer $id
  * @property string $title
  * @property string $alias
+ * @property string $desciption
+ * @property string $content
+ * @property integer $category_id
+ * @property string $meta_title
+ * @property string $meta_desciption
+ * @property integer $created_by
+ * @property integer $created_date
+ * @property string $publish_date
+ * @property integer $updated_date
+ * @property integer $views
+ * @property boolean $active
  */
 class PostBase extends \yii\db\ActiveRecord
 {
@@ -27,7 +38,12 @@ class PostBase extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alias'], 'string', 'max' => 255]
+            [['title', 'category_id'], 'required'],
+            [['content'], 'string'],
+            [['category_id', 'created_by', 'created_date', 'updated_date', 'views'], 'integer'],
+            [['active'], 'boolean'],
+            [['title', 'alias', 'desciption', 'meta_title', 'meta_desciption'], 'string', 'max' => 255],
+            [['publish_date'], 'string']
         ];
     }
 
@@ -40,6 +56,17 @@ class PostBase extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'alias' => 'Alias',
+            'desciption' => 'Desciption',
+            'content' => 'Content',
+            'category_id' => 'Category ID',
+            'meta_title' => 'Meta Title',
+            'meta_desciption' => 'Meta Desciption',
+            'created_by' => 'Created By',
+            'created_date' => 'Created Date',
+            'publish_date' => 'Publish Date',
+            'updated_date' => 'Updated Date',
+            'views' => 'Views',
+            'active' => 'Active',
         ];
     }
 }
