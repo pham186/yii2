@@ -5,9 +5,13 @@ namespace app\modules\post\modules\admin\controllers;
 use Yii;
 use app\modules\post\models\Post;
 use app\modules\post\models\PostSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use yii\base\ErrorException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Inflector;
+use yii\web\Controller;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -22,6 +26,20 @@ class PostController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'update', 'delete'],
+                        'roles' => ['@'],
+                    ],
+                ],
+                'denyCallback' => function($rule, $action) {
+                    throw new HttpException(403, Yii::t('yii','Login Required'));
+                }
             ],
         ];
     }
@@ -63,7 +81,7 @@ class PostController extends Controller
         $model = new Post();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->alias = \yii\helpers\Inflector::slug($model->title);
+            $model->alias = Inflector::slug($model->title);
             $model->created_date = time();
             $model->publish_date = time();
             if($model->save()) {
@@ -96,7 +114,7 @@ class PostController extends Controller
 //            var_dump(strtotime($model->publish_date));die();
 //            var_dump($model);die();
             if(empty($model->alias)) {
-                $model->alias = \yii\helpers\Inflector::slug($model->title);
+                $model->alias = Inflector::slug($model->title);
             }
             $datep = date_parse_from_format('d/m/Y H:i', $model->publish_date);
             $model->publish_date = (string)mktime($datep['hour'],$datep['minute'], $datep['second'], $datep['month'],$datep['day'],$datep['year']);

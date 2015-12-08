@@ -18,11 +18,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'left')->textInput() ?>
+    <?= $form->field($model, 'parent')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->orderBy('left')->all(), 'id', 'FullTitle')) ?>
 
-    <?= $form->field($model, 'right')->textInput() ?>
-
-    <?= $form->field($model, 'level')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

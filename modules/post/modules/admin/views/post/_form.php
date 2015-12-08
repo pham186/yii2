@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-        <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->all(), 'id', 'title')) ?>
+        <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->all(), 'id', 'FullTitle')) ?>
 
         <?= $form->field($model, 'meta_title')->textInput(['maxlength' => true]) ?>
 

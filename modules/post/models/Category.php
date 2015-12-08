@@ -3,6 +3,8 @@
 namespace app\modules\post\models;
 
 use Yii;
+use app\behaviors\NestedSetsBehavior1;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%category}}".
@@ -17,7 +19,38 @@ use Yii;
  */
 class Category extends base\CategoryBase
 {
+    public function attributes()
+    {
+        return array_merge(
+            parent::attributes(),
+            ['parent']
+        );
+    }
+    
+//    public function rules()
+//    {
+//        return ArrayHelper::merge(
+//            parent::rules(),
+//            [['parent'], 'integer', 'safe']
+//        );
+//    }
+    
+    public function behaviors() {
+        return [
+            'tree' => [
+                'class' => NestedSetsBehavior1::className(),
+                'leftAttribute' => 'left',
+                'rightAttribute' => 'right',
+                'depthAttribute' => 'level'
+            ]
+        ];
+    }
+    
     public function getPosts() {
         return $this->hasMany(Post::className(), ['category_id'=>'id']);
+    }
+    
+    public function getFullTitle() {
+        return str_repeat('- - ', $this->level).$this->title;
     }
 }

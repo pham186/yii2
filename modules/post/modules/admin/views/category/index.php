@@ -21,15 +21,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'title',
+            [
+                'attribute' => 'title',
+                'label' => 'Tiêu đề',
+                'value' => function ($model) {
+                    return str_repeat('- - ', $model->level).$model->title;
+                }
+            ],
             'alias',
-            'description',
-            'left',
+            'description:text:Mô tả',
+//            'left',
             // 'right',
             // 'level',
 

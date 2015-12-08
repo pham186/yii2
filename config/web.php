@@ -8,7 +8,7 @@ $config = [
     'bootstrap' => ['log'],
     'modules' => require(__DIR__ . '/modules.php'),
     'language' => 'vi-VN',
-    'sourceLanguage' => 'vi-VN',
+    'sourceLanguage' => 'en-US',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
