@@ -19,6 +19,8 @@ use yii\helpers\ArrayHelper;
  */
 class Category extends base\CategoryBase
 {
+//    public $parent;
+    
     public function attributes()
     {
         return array_merge(
@@ -31,7 +33,7 @@ class Category extends base\CategoryBase
 //    {
 //        return ArrayHelper::merge(
 //            parent::rules(),
-//            [['parent'], 'integer', 'safe']
+//            ['parent', 'safe']
 //        );
 //    }
     
@@ -53,4 +55,14 @@ class Category extends base\CategoryBase
     public function getFullTitle() {
         return str_repeat('- - ', $this->level).$this->title;
     }
+    
+//    public function setParent($value)
+//    {
+//        $this->parent = $value;
+//    }
+//
+//    public function getParent()
+//    {
+//        return $this->parent;
+//    }
 }

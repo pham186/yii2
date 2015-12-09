@@ -48,7 +48,12 @@ class CategoryController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        
+        $category = Category::find()->where(['and',['<','left',$model->left],['>','right',$model->right],['<','level',$model->level]])->orderBy('level ASC')->all();
+        
         return $this->render('view', [
+            'category' => $category,
             'model' => $this->findModel($id),
         ]);
     }
@@ -61,18 +66,26 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-        
-//        var_dump($target);die();
-        if ($model->load(Yii::$app->request->post())) {
-            var_dump($model);die();
-            $target = $this->findModel($model->parent);
-            if($model->appendTo($target)) {
-                return $this->redirect(['view', 'id' => $model->id]);
+//        var_dump($postData['Category']);die();
+        try {
+            if (Yii::$app->request->isPost) {
+                $postData = Yii::$app->request->post()['Category'];
+                $model->setAttributes([
+                    'title'=>$postData['title'],
+                    'alias'=>$postData['alias'],
+                    'description'=>$postData['description'],
+                ]);
+                $target = $this->findModel($postData['parent']);
+                if($model->appendTo($target)) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 
@@ -85,13 +98,41 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        try {
+            if($model->getParent()) {
+                $model->setAttribute('parent', $model->getParent()->id);
+            }
+            if (Yii::$app->request->isPost) {
+                $postData = Yii::$app->request->post()['Category'];
+                $updateModel = $this->findModel($id);
+                $updateModel->setAttributes([
+                    'title'=>$postData['title'],
+                    'alias'=>$postData['alias'],
+                    'description'=>$postData['description'],
+                ]);
+//                var_dump($model);die();
+                if(empty($postData['parent'])) {
+                    $postData['parent'] = 0;
+                }
+                $target = $this->findModel($postData['parent']);
+                if($target->id != $id) {
+                    if($updateModel->appendTo($target)) {
+                        return $this->redirect(['index']);
+                    }
+                } else {
+                    if($updateModel->save()) {
+                        return $this->redirect(['index']);
+                    }
+                }
+            } else {
+                $category = Category::find()->where(['and',['<','left',$model->left],['>','right',$model->right],['<','level',$model->level]])->orderBy('level ASC')->all();
+                return $this->render('update', [
+                    'model' => $model,
+                    'category' => $category,
+                ]);
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 

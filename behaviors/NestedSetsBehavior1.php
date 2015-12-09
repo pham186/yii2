@@ -100,26 +100,58 @@ class NestedSetsBehavior1 extends Behavior
                 ['>', $this->leftAttribute, $left]
             );
         } else {
-            var_dump($this);die();
             $width = $owner->{$this->rightAttribute} - $owner->{$this->leftAttribute};
+            $ownerLeft = $owner->{$this->leftAttribute};
+            $ownerRight = $owner->{$this->rightAttribute};
+            $ownerLevel = $owner->{$this->depthAttribute};
+            
             $owner->updateAllCounters(
                 [$this->rightAttribute=>$width+1],
-                [
-                    ['<', $this->rightAttribute, $owner->{$this->leftAttribute}],
-                    ['>=', $this->rightAttribute, $target->{$this->rightAttribute}]
-                ]
+                ['>=', $this->rightAttribute, $left]
             );
+            
             $owner->updateAllCounters(
                 [$this->leftAttribute=>$width+1],
+                ['>=', $this->leftAttribute, $left]
+            );
+            
+            if($ownerLeft > $left) {
+                $ownerLeft += ($width+1);
+                $ownerRight += ($width+1);
+            }
+            
+            $owner->updateAllCounters(
+                [$this->depthAttribute=>($level-$ownerLevel)],
                 [
-                    ['<', $this->leftAttribute, $owner->{$this->leftAttribute}],
-                    ['>', $this->rightAttribute, $target->{$this->rightAttribute}]
+                    'and',
+                    ['>=', $this->leftAttribute, $ownerLeft],
+                    ['<=', $this->rightAttribute, $ownerRight]
                 ]
             );
-            $owner->{$this->leftAttribute} = $left;
-            $owner->{$this->rightAttribute} = $left+$width;
             
+            $owner->updateAllCounters(
+                [
+                    $this->leftAttribute=>($left-$ownerLeft),
+                    $this->rightAttribute=>($left-$ownerLeft),
+                ],
+                [
+                    'and',
+                    ['>=', $this->leftAttribute, $ownerLeft],
+                    ['<=', $this->rightAttribute, $ownerRight]
+                ]
+            );
+            
+            $owner->updateAllCounters(
+                [$this->rightAttribute=>-$width-1],
+                ['>=', $this->rightAttribute, $ownerRight]
+            );
+            
+            $owner->updateAllCounters(
+                [$this->leftAttribute=>-$width-1],
+                ['>=', $this->leftAttribute, $ownerRight]
+            );
         }
+        
         try {
             return $owner->save($runValidation, $attributes);
         } catch (Exception $e) {
@@ -158,5 +190,15 @@ class NestedSetsBehavior1 extends Behavior
     }
     public function saveNode($runValidation = true, $attributes = null) {
         
+    }
+    
+    public function getParent() {
+        $owner = $this->owner;
+        return $owner->find()->where([
+            'and',
+            ['=','level',$owner->level-1],
+            ['<',$this->leftAttribute,$owner->{$this->leftAttribute}],
+            ['>',$this->rightAttribute,$owner->{$this->rightAttribute}],
+        ])->one();
     }
 }

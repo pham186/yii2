@@ -8,6 +8,9 @@ use yii\widgets\DetailView;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
+foreach($category as $item) {
+   $this->params['breadcrumbs'][] = ['label' => $item->title, 'url' => ['view', 'id' => $item->id]];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-view">

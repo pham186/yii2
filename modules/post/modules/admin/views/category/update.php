@@ -7,6 +7,9 @@ use yii\helpers\Html;
 
 $this->title = 'Update Category: ' . ' ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
+foreach($category as $item) {
+   $this->params['breadcrumbs'][] = ['label' => $item->title, 'url' => ['view', 'id' => $item->id]];
+}
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
