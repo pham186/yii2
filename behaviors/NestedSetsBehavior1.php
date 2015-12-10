@@ -48,118 +48,36 @@ class NestedSetsBehavior1 extends Behavior
      * @param array $attributes
      * @return boolean
      */
-    public function appendTo($target = null, $runValidation = true, $attributes = null) {
-        
-        $owner = $this->owner;
-        $db = $owner->getDb();
-        if($target == null) {
-            $lastChild = $owner->find()->where(['level'=>$this->rootLevel+1])->orderBy('left DESC')->one();
-        } else {
-            try {
-            $lastChild = $owner->find()
-                    ->where([
-                        $this->depthAttribute => $target->{$this->depthAttribute}+1,
-                    ])
-                    ->andWhere([
-                        'and',
-                        ['>', $this->leftAttribute, $target->{$this->leftAttribute}],
-                        ['<', $this->rightAttribute, $target->{$this->rightAttribute}],
-                    ])
-                    ->orderBy('left DESC')
-                    ->one();
-            } catch (yii\db\Exception $e) {
-                echo $e->getMessage();
-            }
-        }
-        
+    public function appendTo($target = null, $isParent = true, $runValidation = true, $attributes = null) {
         
         $left = 1;
-        $right = 2;
         $level = $this->rootLevel+1;
-        if(empty($lastChild) && !empty($target)) {
+        if(!empty($target)) {
             $left = $target->{$this->rightAttribute};
-//            $right = $target->{$this->rightAttribute};
             $level = $target->{$this->depthAttribute}+1;
-        } elseif (!empty($lastChild)) {
-            $left = $lastChild->{$this->rightAttribute} + 1;
-//            $right = $lastChild->{$this->rightAttribute} + 2;
-            $level = $lastChild->{$this->depthAttribute};
-        }
-        if($owner->isNewRecord == true) {
-            $width = 1;
-            $owner->{$this->leftAttribute} = $left;
-            $owner->{$this->rightAttribute} = $left+$width;
-            $owner->{$this->depthAttribute} = $level;
-            $owner->updateAllCounters(
-                [$this->rightAttribute=>2],
-                ['>=', $this->rightAttribute, $left]
-            );
-            
-            $owner->updateAllCounters(
-                [$this->leftAttribute=>2],
-                ['>', $this->leftAttribute, $left]
-            );
-        } else {
-            $width = $owner->{$this->rightAttribute} - $owner->{$this->leftAttribute};
-            $ownerLeft = $owner->{$this->leftAttribute};
-            $ownerRight = $owner->{$this->rightAttribute};
-            $ownerLevel = $owner->{$this->depthAttribute};
-            
-            $owner->updateAllCounters(
-                [$this->rightAttribute=>$width+1],
-                ['>=', $this->rightAttribute, $left]
-            );
-            
-            $owner->updateAllCounters(
-                [$this->leftAttribute=>$width+1],
-                ['>=', $this->leftAttribute, $left]
-            );
-            
-            if($ownerLeft > $left) {
-                $ownerLeft += ($width+1);
-                $ownerRight += ($width+1);
+            if($isParent == false) {
+                $left = $target->{$this->rightAttribute}+1;
+                $level = $target->{$this->depthAttribute};
             }
-            
-            $owner->updateAllCounters(
-                [$this->depthAttribute=>($level-$ownerLevel)],
-                [
-                    'and',
-                    ['>=', $this->leftAttribute, $ownerLeft],
-                    ['<=', $this->rightAttribute, $ownerRight]
-                ]
-            );
-            
-            $owner->updateAllCounters(
-                [
-                    $this->leftAttribute=>($left-$ownerLeft),
-                    $this->rightAttribute=>($left-$ownerLeft),
-                ],
-                [
-                    'and',
-                    ['>=', $this->leftAttribute, $ownerLeft],
-                    ['<=', $this->rightAttribute, $ownerRight]
-                ]
-            );
-            
-            $owner->updateAllCounters(
-                [$this->rightAttribute=>-$width-1],
-                ['>=', $this->rightAttribute, $ownerRight]
-            );
-            
-            $owner->updateAllCounters(
-                [$this->leftAttribute=>-$width-1],
-                ['>=', $this->leftAttribute, $ownerRight]
-            );
         }
         
-        try {
-            return $owner->save($runValidation, $attributes);
-        } catch (Exception $e) {
-            echo $e;
-        }
+        return $this->saveNode($left, $level, $runValidation, $attributes);
     }
-    public function prependTo($target = null, $runValidation = true, $attributes = null) {
+    
+    public function prependTo($target = null, $isParent = true, $runValidation = true, $attributes = null) {
         
+        $left = 1;
+        $level = $this->rootLevel+1;
+        if(!empty($target)) {
+            $left = $target->{$this->rightAttribute};
+            $level = $target->{$this->depthAttribute}+1;
+            if($isParent == false) {
+                $left = $target->{$this->leftAttribute};
+                $level = $target->{$this->depthAttribute};
+            }
+        }
+        
+        return $this->saveNode($left, $level, $runValidation, $attributes);
     }
     public function insertAfter($target = null, $runValidation = true, $attributes = null) {
         
@@ -167,17 +85,58 @@ class NestedSetsBehavior1 extends Behavior
     public function insertBefore($target = null, $runValidation = true, $attributes = null) {
         
     }
+    public function moveNode($movetype = 'left', $runValidation = true, $attributes = null) {
+        switch ($movetype) {
+            case 'left' :
+                return $this->moveLeft($runValidation, $attributes);
+                break;
+            case 'right' :
+                return $this->moveRight($runValidation, $attributes);
+                break;
+            case 'first' :
+                return $this->moveFirst($runValidation, $attributes);
+                break;
+            case 'last' :
+                return $this->moveLast($runValidation, $attributes);
+                break;
+        }
+    }
     public function moveFirst($runValidation = true, $attributes = null) {
         
     }
     public function moveLast($runValidation = true, $attributes = null) {
         
     }
+    
+    /**
+     * Move a Node to left
+     * @param boolean $runValidation
+     * @param array $attributes
+     * @return boolean If node don't has previous node - return false. If node has previous node - return result save node as boolean
+     */
     public function moveLeft($runValidation = true, $attributes = null) {
+        $prev = $this->prev();
+        if(!empty($prev)) {
+            return $this->prependTo($prev, false, $runValidation, $attributes);
+        } else {
+            return false;
+        }
         
     }
+    
+    /**
+     * Move a Node to right
+     * @param boolean $runValidation
+     * @param array $attributes
+     * @return boolean
+     */
     public function moveRight($runValidation = true, $attributes = null) {
-        
+        $next = $this->next();
+        if(!empty($next)) {
+            return $this->appendTo($next, false, $runValidation, $attributes);
+        } else {
+            return false;
+        }
     }
     public function moveAfter($target = null, $runValidation = true, $attributes = null) {
         
@@ -188,10 +147,96 @@ class NestedSetsBehavior1 extends Behavior
     public function makeRoot($runValidation = true, $attributes = null) {
         
     }
-    public function saveNode($runValidation = true, $attributes = null) {
+    public function saveNode($left, $level, $runValidation = true, $attributes = null) {
         
+        $owner = $this->owner;
+        if($owner->isNewRecord == true) {
+            $width = 1;
+            $owner->{$this->leftAttribute} = $left;
+            $owner->{$this->rightAttribute} = $left+$width;
+            $owner->{$this->depthAttribute} = $level;
+            
+            $this->shiftLeftRight($left, 2);
+        } else {
+            $width = $owner->{$this->rightAttribute} - $owner->{$this->leftAttribute};
+            $ownerLeft = $owner->{$this->leftAttribute};
+            $ownerRight = $owner->{$this->rightAttribute};
+            $ownerLevel = $owner->{$this->depthAttribute};
+            
+            $this->shiftLeftRight($left, $width+1);
+            
+            if($ownerLeft > $left) {
+                $ownerLeft += ($width+1);
+                $ownerRight += ($width+1);
+            }
+            
+            $owner->updateAllCounters(
+                [
+                    $this->depthAttribute=>($level-$ownerLevel),
+                    $this->leftAttribute=>($left-$ownerLeft),
+                    $this->rightAttribute=>($left-$ownerLeft),
+                ],
+                [
+                    'and',
+                    ['>=', $this->leftAttribute, $ownerLeft],
+                    ['<=', $this->rightAttribute, $ownerRight]
+                ]
+            );
+            
+            $this->shiftLeftRight($ownerRight, -$width-1);
+        }
+        
+        try {
+            return $owner->save($runValidation, $attributes);
+        } catch (Exception $e) {
+            echo $e;
+        }
     }
     
+    public function shiftLeftRight($key, $value) {
+        foreach ([$this->leftAttribute, $this->rightAttribute] as $attribute) {
+            $this->owner->updateAllCounters(
+                [$attribute=>$value],
+                ['>=', $attribute, $key]
+            );
+        }
+    }
+    
+    public function next() {
+        return $this->owner->find()->where(['=',$this->leftAttribute,$this->owner->{$this->rightAttribute}+1])->one();
+    }
+    
+    public function prev() {
+         return $this->owner->find()->where(['=',$this->rightAttribute,$this->owner->{$this->leftAttribute}-1])->one();
+    }
+    
+    public function first($isParent = false) {
+        $owner = $this->owner;
+        $left = 1;
+        $parent = $owner->getParent();
+        if(!empty($parent)) {
+            $left = $parent->{$this->leftAttribute}+1;
+        }
+        return $owner->find()->where([
+            'and',
+            ['=',$this->leftAttribute,$left],
+        ])->one();
+    }
+    
+    public function last($isParent = false) {
+        $owner = $this->owner;
+        $parent = $owner->getParent();
+        if($isParent) {
+            $parent = $owner;
+        }
+        if(!empty($parent)) {
+            return $owner->find()->where(['=',$this->rightAttribute,$parent->{$this->rightAttribute}-1])->one();
+        } else {
+            return $owner->find()->where(['=',$this->depthAttribute,$owner->{$this->depthAttribute}])->orderBy($this->rightAttribute.' DESC')->one();
+        }
+    }
+
+
     public function getParent() {
         $owner = $this->owner;
         return $owner->find()->where([
