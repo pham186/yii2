@@ -8,6 +8,7 @@ use app\modules\post\models\CategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -80,8 +81,10 @@ class CategoryController extends Controller
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } else {
+                $listcategory = ArrayHelper::map(Category::find()->orderBy('left')->all(), 'id', 'FullTitle');
                 return $this->render('create', [
                     'model' => $model,
+                    'listcategory'=>$listcategory
                 ]);
             }
         } catch (Exception $e) {
@@ -125,10 +128,12 @@ class CategoryController extends Controller
                     }
                 }
             } else {
+                $listcategory = ArrayHelper::map(Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle');
                 $category = Category::find()->where(['and',['<','left',$model->left],['>','right',$model->right],['<','level',$model->level]])->orderBy('level ASC')->all();
                 return $this->render('update', [
                     'model' => $model,
                     'category' => $category,
+                    'listcategory'=>$listcategory,
                 ]);
             }
         } catch (Exception $e) {

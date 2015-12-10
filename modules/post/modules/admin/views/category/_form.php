@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'parent')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle'),array('prompt'=>'Root Category')) ?>
+    <?= $form->field($model, 'parent')->dropDownList($listcategory, ['prompt'=>'Root Category']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
