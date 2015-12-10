@@ -20,6 +20,13 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <link rel='shortcut icon' href='<?=  Yii::$app->getHomeUrl() ?>favicon.ico' />
     <title><?= Html::encode($this->title) ?></title>
+    <?php $this->registerCss('#loadding {
+    position: fixed;
+    top: 40%;
+    right: 50%;
+    width: 80px;
+    height: 80px;
+}'); ?>
     <?php $this->head() ?>
 </head>
 <body>
@@ -69,6 +76,16 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+<?php $this->registerJs('
+var html = \'<div id ="loadding" style="display:none; z-index: 99999;"><img src="'.Yii::$app->homeUrl.'themes/admin/images/loadding.gif"></div>\';
+$("body").append(html);
+$(document).ajaxStart(function(data) {
+    $("#loadding").css("display", "block");
+});
+
+$(document).ajaxStop(function(data) {
+    $("#loadding").css("display", "none");
+});'); ?>
 </body>
 </html>
 <?php $this->endPage() ?>

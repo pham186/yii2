@@ -31,6 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return str_repeat('- - ', $model->level).$model->title;
                 }
             ],
+            [
+                'attribute' => 'id',
+                'format' => 'raw',
+                'label' => 'Sắp xếp',
+                'value' => function ($model) {
+                    $str = Html::a('<span class="sortbutton glyphicon glyphicon-triangle-bottom" aria-hidden="true" data-id="'.$model->id.'" data-type="right"></span>', 'javascript:void(0)', ['title' => 'Down']);
+                    $str .= Html::a('<span class="sortbutton glyphicon glyphicon-triangle-top" aria-hidden="true" data-id="'.$model->id.'" data-type="left"></span>', 'javascript:void(0)', ['title' => 'Up']);
+                    return $str;
+                },
+                'contentOptions'=>['style'=>'width: 17px;text-align: center;']
+            ],
             'alias',
             'description:text:Mô tả',
 //            'left',
@@ -39,9 +50,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {delete} {link}'
+                'template' => '{update} {delete} {link}',
+                'contentOptions'=>['style'=>'width: 60px;text-align: center;']
             ],
         ],
     ]); ?>
-
 </div>
+<?php $this->registerJs('
+$(".sortbutton").on("click",function(){
+    var movetype = $(this).attr("data-type");
+    var id = $(this).attr("data-id");
+    $.post("'.Yii::$app->urlManager->createUrl('admin/category/movenode').'", {id:id,movetype:movetype} ,function(data){
+        if(data) {
+            location.reload();
+        }
+    });
+});');
+?>

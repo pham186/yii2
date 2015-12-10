@@ -5,9 +5,10 @@ namespace app\modules\post\modules\admin\controllers;
 use Yii;
 use app\modules\post\models\Category;
 use app\modules\post\models\CategorySearch;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -75,13 +76,18 @@ class CategoryController extends Controller
                     'alias'=>$postData['alias'],
                     'description'=>$postData['description'],
                 ]);
+                if(empty($postData['parent'])) {
+                    $postData['parent'] = 0;
+                }
                 $target = $this->findModel($postData['parent']);
                 if($model->appendTo($target)) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } else {
+                $categorylist = ArrayHelper::map(Category::find()->orderBy('left')->all(), 'id', 'FullTitle');
                 return $this->render('create', [
                     'model' => $model,
+                    'categorylist' => $categorylist
                 ]);
             }
         } catch (Exception $e) {
@@ -126,9 +132,11 @@ class CategoryController extends Controller
                 }
             } else {
                 $category = Category::find()->where(['and',['<','left',$model->left],['>','right',$model->right],['<','level',$model->level]])->orderBy('level ASC')->all();
+                $categorylist = ArrayHelper::map(Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle');
                 return $this->render('update', [
                     'model' => $model,
                     'category' => $category,
+                    'categorylist' => $categorylist
                 ]);
             }
         } catch (Exception $e) {
@@ -148,6 +156,22 @@ class CategoryController extends Controller
 
         return $this->redirect(['index']);
     }
+    
+    /**
+     * 
+     */
+    public function actionMovenode() {
+        $request = Yii::$app->request;
+        $id = $request->post('id');
+        $movetype = $request->post('movetype');
+        $model = $this->findModel($id);
+        if(!empty($model)) {
+            return $model->moveNode($movetype);
+            //return $model->moveNode($movetype);
+        } else {
+            echo 0;
+        }
+    }
 
     /**
      * Finds the Category model based on its primary key value.
@@ -158,10 +182,11 @@ class CategoryController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+        return Category::findOne($id);
+//        if (($model = Category::findOne($id)) !== null) {
+//            return $model;
+//        } else {
+//            throw new NotFoundHttpException('The requested page does not exist.');
+//        }
     }
 }
