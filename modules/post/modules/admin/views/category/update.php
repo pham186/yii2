@@ -19,11 +19,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
-<<<<<<< HEAD
-        'listcategory'=>$listcategory,
-=======
         'categorylist' => $categorylist
->>>>>>> 3bac2535bf3f2cbcc024ce9668a0424dfa14baac
     ]) ?>
 
 </div>
