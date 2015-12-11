@@ -131,6 +131,7 @@ class CategoryController extends Controller
                     }
                 }
             } else {
+                $listcategory = ArrayHelper::map(Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle');
                 $category = Category::find()->where(['and',['<','left',$model->left],['>','right',$model->right],['<','level',$model->level]])->orderBy('level ASC')->all();
                 $categorylist = ArrayHelper::map(Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle');
                 return $this->render('update', [
