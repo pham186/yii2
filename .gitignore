@@ -29,6 +29,3 @@ phpunit.phar
 # all cache file
 *.cache
 *.bin
-
-# assets dir
-/assets
