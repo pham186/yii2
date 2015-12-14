@@ -21,9 +21,7 @@ class TinyMCE extends Widget
     
     public $cssClass = 'form-control';
     
-    public $rows = 3;
-    
-    public $height = 500;
+    public $height = 300;
     
     public $width;
     
@@ -50,7 +48,7 @@ class TinyMCE extends Widget
             throw new NotAcceptableHttpException('The editor\'s field not set');
         }
         
-        $this->view->registerJsFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', ['position'=>View::POS_HEAD]);
+//        $this->view->registerJsFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', ['position'=>View::POS_HEAD]);
 //        $this->view->registerJsFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', ['position'=>View::POS_HEAD]);
         TinyMCEAsset::register($this->view);
         
@@ -118,11 +116,9 @@ class TinyMCE extends Widget
     
     public function run() {
         return $this->render('tinymce',[
-            'id'=>$this->id,
             'model'=>$this->model,
             'field'=>$this->field,
             'cssClass'=>$this->cssClass,
-            'rows'=>$this->rows,
         ]);
     }
 }
