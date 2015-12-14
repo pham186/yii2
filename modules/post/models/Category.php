@@ -4,6 +4,7 @@ namespace app\modules\post\models;
 
 use Yii;
 use app\behaviors\NestedSetsBehavior1;
+use yii\behaviors\SluggableBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -44,7 +45,13 @@ class Category extends base\CategoryBase
                 'leftAttribute' => 'left',
                 'rightAttribute' => 'right',
                 'depthAttribute' => 'level'
-            ]
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'alias',
+                'immutable' => true
+            ],
         ];
     }
     

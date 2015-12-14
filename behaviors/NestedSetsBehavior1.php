@@ -21,22 +21,22 @@ use yii\db\Expression;
 class NestedSetsBehavior1 extends Behavior
 {
     /**
-     * @var string 
+     * @var string Left Attribute - default 'left'
      */
     public $leftAttribute = 'left';
     
     /**
-     * @var string 
+     * @var string Right Attribute - default 'right'
      */
     public $rightAttribute = 'right';
     
     /**
-     * @var string 
+     * @var string Depth Attribute - default 'level'
      */
     public $depthAttribute = 'level';
     
     /**
-     * @var int
+     * @var int Root level - default 0
      */
     public $rootLevel = 0;
 
@@ -59,6 +59,12 @@ class NestedSetsBehavior1 extends Behavior
                 $left = $target->{$this->rightAttribute}+1;
                 $level = $target->{$this->depthAttribute};
             }
+        } else {
+            $last = $this->owner->find()->where(['=',$this->depthAttribute,$this->rootLevel+1])->orderBy($this->rightAttribute.' DESC')->one();
+            if(!empty($last)) {
+                $left = $last->{$this->rightAttribute}+1;
+                $level = $last->{$this->depthAttribute};
+            }
         }
         
         return $this->saveNode($left, $level, $runValidation, $attributes);
@@ -74,6 +80,12 @@ class NestedSetsBehavior1 extends Behavior
             if($isParent == false) {
                 $left = $target->{$this->leftAttribute};
                 $level = $target->{$this->depthAttribute};
+            }
+        } else {
+            $first = $this->owner->find()->where(['=',$this->depthAttribute,$this->rootLevel+1])->orderBy($this->leftAttribute.' ASC')->one();
+            if(!empty($first)) {
+                $left = $first->{$this->leftAttribute};
+                $level = $first->{$this->depthAttribute};
             }
         }
         

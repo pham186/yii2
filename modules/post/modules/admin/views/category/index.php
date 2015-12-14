@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <?php \yii\widgets\Pjax::begin(['id' => 'list-category']); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
@@ -51,10 +51,15 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete} {link}',
-                'contentOptions'=>['style'=>'width: 60px;text-align: center;']
+                'contentOptions'=>['style'=>'width: 60px;text-align: center;'],
+//                'buttons' => [
+//                    'delete' => [
+//                        'data-confirm' => 'Xóa mục này sẽ xóa cả các mục con & bài viết của nó.<br/>Bạn có chắc chắn muốn xóa không?'
+//                    ]
+//                ]
             ],
         ],
-    ]); ?>
+    ]);    yii\widgets\Pjax::end();?>
 </div>
 <?php $this->registerJs('
 $(".sortbutton").on("click",function(){

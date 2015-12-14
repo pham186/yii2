@@ -31,7 +31,7 @@ class CategoryBase extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'alias'], 'required'],
+            [['title'], 'required'],
             [['left', 'right', 'level'], 'integer'],
             [['title', 'alias', 'description'], 'string', 'max' => 255]
         ];

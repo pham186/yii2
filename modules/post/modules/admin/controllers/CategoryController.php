@@ -81,7 +81,7 @@ class CategoryController extends Controller
                 }
                 $target = $this->findModel($postData['parent']);
                 if($model->appendTo($target)) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index']);
                 }
             } else {
                 $categorylist = ArrayHelper::map(Category::find()->orderBy('left')->all(), 'id', 'FullTitle');
@@ -121,7 +121,7 @@ class CategoryController extends Controller
                     $postData['parent'] = 0;
                 }
                 $target = $this->findModel($postData['parent']);
-                if($target->id != $id) {
+                if(!empty($target) && $target->id != $id) {
                     if($updateModel->appendTo($target)) {
                         return $this->redirect(['index']);
                     }
@@ -131,7 +131,6 @@ class CategoryController extends Controller
                     }
                 }
             } else {
-                $listcategory = ArrayHelper::map(Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle');
                 $category = Category::find()->where(['and',['<','left',$model->left],['>','right',$model->right],['<','level',$model->level]])->orderBy('level ASC')->all();
                 $categorylist = ArrayHelper::map(Category::find()->where(['or',['<','left',$model->left],['>','right',$model->right]])->orderBy('left')->all(), 'id', 'FullTitle');
                 return $this->render('update', [
@@ -153,9 +152,9 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        return $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        //return $this->redirect(['index']);
     }
     
     /**
