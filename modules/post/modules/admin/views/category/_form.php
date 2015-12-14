@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\widgets\tinymce\TinyMCE;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\post\models\Category */
@@ -11,12 +12,12 @@ use yii\widgets\ActiveForm;
 <div class="category-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    
+    <?= TinyMCE::widget(['model'=>$model,'field'=>'description','mode'=>'advanced']); ?>
 
     <?= $form->field($model, 'parent')->dropDownList($categorylist ,array('prompt'=>'Root Category')) ?>
 

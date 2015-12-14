@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'desciption')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+        <?= TinyMCE::widget(['model'=>$model,'field'=>'content','mode'=>'advanced']); ?>
 
         <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->all(), 'id', 'FullTitle')) ?>
 
