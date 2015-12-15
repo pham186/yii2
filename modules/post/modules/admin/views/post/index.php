@@ -2,14 +2,17 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\modules\post\Module;
+use app\widgets\FileManager;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\post\models\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Posts';
+$this->title = Module::t('general', 'Posts');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?= FileManager::widget(); ?>
 <div class="post-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -28,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //            'id',
             'title',
-            'category.title:raw:Category',
+            'category.title:raw:'.Module::t('general', 'Category'),
 //            'alias',
 //            'desciption',
 //            'content:ntext',
@@ -39,11 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [ 
                 'attribute' => 'created_date',
                 'format' => ['date', 'php:h:i:sA d-m-Y'],
+                'label' => Module::t('general', 'Created Date'),
             ],
 //             'publish_date:date, H\:i\:s:abc',
 //             'updated_date',
-             'views',
-             'active:boolean',
+             'views:raw:'.Module::t('general', 'Views'),
+             'active:boolean:'.Module::t('general', 'Active'),
 
             [
                 'class' => 'yii\grid\ActionColumn',

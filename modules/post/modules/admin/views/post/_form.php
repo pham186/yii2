@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\widgets\tinymce\TinyMCE;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\post\models\Post */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?= var_dump((int)$model->publish_date)?>
+
 <div class="post-form row">
     
     <div class="col-md-12">

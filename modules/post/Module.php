@@ -22,5 +22,23 @@ class Module extends \yii\base\Module
                 'class' => 'app\modules\post\modules\admin\Module',
             ],
         ];
+        
+        $this->registerTranslations();
+    }
+    
+    public function registerTranslations() {
+        \Yii::$app->i18n->translations['modules/post/*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'vi',
+            'basePath' => '@app/modules/post/messages',
+            'fileMap' => [
+                'modules/post/general' => 'general.php',
+            ]
+        ];
+    }
+    
+     public static function t($category, $message, $params = [], $language = null)
+    {
+        return \Yii::t('modules/post/' . $category, $message, $params, $language);
     }
 }
