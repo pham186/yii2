@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\modules\post\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\post\models\CategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Categories';
+$this->title = Module::t('general','Post Category');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index">
@@ -17,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php \yii\widgets\Pjax::begin(['id' => 'list-category']); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
@@ -51,14 +51,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete} {link}',
                 'contentOptions'=>['style'=>'width: 60px;text-align: center;'],
-//                'buttons' => [
-//                    'delete' => [
-//                        'data-confirm' => 'Xóa mục này sẽ xóa cả các mục con & bài viết của nó.<br/>Bạn có chắc chắn muốn xóa không?'
-//                    ]
-//                ]
+                'buttons' => [
+                    'delete' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, ['data-confirm' => "<small>Xóa mục này sẽ xóa cả các mục con & bài viết của nó.</small><br/>Bạn có chắc chắn muốn xóa không?", 'data-method'=>'post']);
+                    }
+                ]
             ],
         ],
-    ]);    yii\widgets\Pjax::end();?>
+    ]);?>
 </div>
 <?php $this->registerJs('
 $(".sortbutton").on("click",function(){
@@ -69,5 +69,10 @@ $(".sortbutton").on("click",function(){
             location.reload();
         }
     });
-});');
+});
+//window.isActive = true;
+//$(window).focus(function() { this.isActive = true; });
+//$(window).blur(function() { this.isActive = false; });
+//setInterval(function(){if(this.isActive == false) {alert("You have a message from Bizmates");this.isActive = true;}}, 3000);
+');
 ?>

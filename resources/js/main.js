@@ -3,6 +3,7 @@ yii.confirm = function (message, ok, cancel) {
         {
             title: "Cảnh báo!",
             text: message,
+            html: true,
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
@@ -13,10 +14,10 @@ yii.confirm = function (message, ok, cancel) {
         function(isConfirm){
             if (isConfirm) {
                 !ok || ok();
-                swal("Deleted!", "Your imaginary file has been deleted.", "success");
-              } else {
+                //swal("Deleted!", "Your imaginary file has been deleted.", "success");
+            } else {
                 !cancel || cancel();
-              }
+            }
         }
     );
     // confirm will always return false on the first call

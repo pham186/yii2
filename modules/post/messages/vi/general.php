@@ -9,8 +9,12 @@
 return [
     'Posts' => 'Bài viết',
     'Title' => 'Tiêu đề',
-    'Category' => 'Danh mục',
+    'Post Category' => 'Danh mục bài viết',
     'Created Date' => 'Ngày tạo',
     'Views' => 'Lượt xem',
-    'Active' => 'Kích hoạt'
+    'Active' => 'Kích hoạt',
+    'The category not found.' => 'Không tìm thấy mục',
+    'Create category successfull' => 'Thêm mới danh mục thành công',
+    'Update category successfull' => 'Cập nhật danh mục thành công',
+    'Delete category successfull' => 'Xóa danh mục thành công',
 ];

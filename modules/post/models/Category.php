@@ -50,7 +50,8 @@ class Category extends base\CategoryBase
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'title',
                 'slugAttribute' => 'alias',
-                'immutable' => true
+                'immutable' => true,
+                'ensureUnique'=>true
             ],
         ];
     }

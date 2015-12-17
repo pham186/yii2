@@ -214,6 +214,13 @@ class NestedSetsBehavior1 extends Behavior
         }
     }
     
+    public function deleteNode($deleteChild = true) {
+        $left = $this->owner->{$this->leftAttribute};
+        $right = $this->owner->{$this->rightAttribute};
+        $this->owner->deleteAll(['and',['>=','left',$left], ['<=','right',$right]]);
+        $this->shiftLeftRight($right, -($right-$left)-1);
+    }
+    
     public function next() {
         return $this->owner->find()->where(['=',$this->leftAttribute,$this->owner->{$this->rightAttribute}+1])->one();
     }

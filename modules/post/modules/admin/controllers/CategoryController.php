@@ -5,6 +5,8 @@ namespace app\modules\post\modules\admin\controllers;
 use Yii;
 use app\modules\post\models\Category;
 use app\modules\post\models\CategorySearch;
+use app\modules\post\models\Post;
+use app\modules\post\Module;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -81,6 +83,7 @@ class CategoryController extends Controller
                 }
                 $target = $this->findModel($postData['parent']);
                 if($model->appendTo($target)) {
+                    \Yii::$app->session->setFlash('success', Module::t('general', 'Create category successfull'));
                     return $this->redirect(['index']);
                 }
             } else {
@@ -123,10 +126,12 @@ class CategoryController extends Controller
                 $target = $this->findModel($postData['parent']);
                 if(!empty($target) && $target->id != $id) {
                     if($updateModel->appendTo($target)) {
+                        \Yii::$app->session->setFlash('success', Module::t('general', 'Update category successfull'));
                         return $this->redirect(['index']);
                     }
                 } else {
                     if($updateModel->save()) {
+                        \Yii::$app->session->setFlash('success', Module::t('general', 'Update category successfull'));
                         return $this->redirect(['index']);
                     }
                 }
@@ -152,9 +157,21 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        return $this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
+        $currentNode = $this->findModel($id);
+        if(!$currentNode) {
+            throw new NotFoundHttpException(Module::t('general','The category not found.'));
+        }
+        $node = Category::find()->select('id')->where(['and',['>=','left',$currentNode->left], ['<=','right',$currentNode->right]])->asArray()->all();
+        try {
+            $currentNode->deleteNode();
+//            if($delcategory) {
+                Post::deleteAll(['IN','category_id',ArrayHelper::getColumn($node, 'id')]);
+                \Yii::$app->session->setFlash('success', Module::t('general', 'Delete category successfull'));
+//            } 
+        } catch (Exception $e) {
+            \Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['index']);
     }
     
     /**
