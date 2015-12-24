@@ -3,12 +3,14 @@
 namespace app\modules\post\modules\admin\controllers;
 
 use Yii;
+use app\modules\post\Module;
 use app\modules\post\models\Post;
 use app\modules\post\models\PostSearch;
 use yii\base\ErrorException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -85,6 +87,7 @@ class PostController extends Controller
             $model->created_date = time();
             $model->publish_date = time();
             if($model->save()) {
+                \Yii::$app->session->setFlash('success', Module::t('general', 'Create post successfull'));
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -104,23 +107,27 @@ class PostController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-//            Yii::$app->formatter->locale = 'vi-VN';
-////            echo \Yii::$app->formatter->asTime($model->publish_date);die();
-//            $datep = date_parse_from_format('d/m/Y H:i', $model->publish_date);
-//            echo mktime($datep['hour'],$datep['minute'], $datep['second'], $datep['month'],$datep['day'],$datep['year']);die();
-//            echo date('h:i:sA d/m/Y','12:00:00AM 24/11/2015');die();
-//            echo date('h:i:sA d/m/Y', $model->publish_date);
-//            var_dump(strtotime($model->publish_date));die();
-//            var_dump($model);die();
+        if (Yii::$app->request->isPost) {
+            $postData = Yii::$app->request->post()[StringHelper::basename($model->className())];
+            var_dump(Yii::$app->request->post());
+            $datep = date_parse_from_format('d/m/Y h:i:sA', $postData['publish_date']);
+            $postData['publish_date'] = (int)mktime($datep['hour'],$datep['minute'], $datep['second'], $datep['month'],$datep['day'],$datep['year']);
+            $model->title = $postData['title'];
+            $model->alias = $postData['alias'];
+            $model->desciption = $postData['desciption'];
+            $model->content = $postData['content'];
+            $model->category_id = $postData['category_id'];
+            $model->image = $postData['image'];
+            $model->meta_title = $postData['meta_title'];
+            $model->meta_desciption = $postData['meta_desciption'];
+            $model->publish_date = $postData['publish_date'];
+            $model->active = $postData['active'];
             if(empty($model->alias)) {
                 $model->alias = Inflector::slug($model->title);
             }
-            $datep = date_parse_from_format('d/m/Y H:i', $model->publish_date);
-            $model->publish_date = (string)mktime($datep['hour'],$datep['minute'], $datep['second'], $datep['month'],$datep['day'],$datep['year']);
             if($model->save()) {
-//                var_dump($model);
-                return $this->redirect(['view', 'id' => $model->id]);
+                \Yii::$app->session->setFlash('success', Module::t('general', 'Update post successfull'));
+                return $this->redirect(['index']);
             } else {
                 var_dump($model);
                 var_dump($model->getErrors());

@@ -4,6 +4,11 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\modules\post\Module;
 use app\widgets\FileManager;
+use yii\authclient\OAuth2;
+$oauthClient = new OAuth2();
+$url = $oauthClient->buildAuthUrl(); // Build authorization URL
+
+echo $url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\post\models\PostSearch */
@@ -30,6 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
+//            [
+//                'attribute' => 'image',
+//                'format' => 'html',
+//                'label' => Module::t('general', 'Image'),
+//                'value' => function($model){
+//                    return Html::img('@web/resources/thumbs/'.$model->image, ['alt'=>'Image','style'=>'max-width: 100px;']);
+//                },
+//            ],
             'title',
             'category.title:raw:'.Module::t('general', 'Category'),
 //            'alias',

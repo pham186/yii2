@@ -3,9 +3,10 @@
 namespace app\modules\post\models\base;
 
 use Yii;
+use app\modules\post\Module;
 
 /**
- * This is the model class for table "{{%post}}".
+ * This is the model class for table "tbl_post".
  *
  * @property integer $id
  * @property string $title
@@ -13,11 +14,12 @@ use Yii;
  * @property string $desciption
  * @property string $content
  * @property integer $category_id
+ * @property string $image
  * @property string $meta_title
  * @property string $meta_desciption
  * @property integer $created_by
  * @property integer $created_date
- * @property string $publish_date
+ * @property integer $publish_date
  * @property integer $updated_date
  * @property integer $views
  * @property boolean $active
@@ -29,7 +31,7 @@ class PostBase extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%post}}';
+        return 'tbl_post';
     }
 
     /**
@@ -40,10 +42,9 @@ class PostBase extends \yii\db\ActiveRecord
         return [
             [['title', 'category_id'], 'required'],
             [['content'], 'string'],
-            [['category_id', 'created_by', 'created_date', 'updated_date', 'views'], 'integer'],
+            [['category_id', 'created_by', 'views'], 'integer'],
             [['active'], 'boolean'],
-            [['title', 'alias', 'desciption', 'meta_title', 'meta_desciption'], 'string', 'max' => 255],
-            [['publish_date'], 'string']
+            [['title', 'alias', 'desciption', 'image', 'meta_title', 'meta_desciption'], 'string', 'max' => 255]
         ];
     }
 
@@ -53,20 +54,21 @@ class PostBase extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'alias' => 'Alias',
-            'desciption' => 'Desciption',
-            'content' => 'Content',
-            'category_id' => 'Category ID',
-            'meta_title' => 'Meta Title',
-            'meta_desciption' => 'Meta Desciption',
-            'created_by' => 'Created By',
-            'created_date' => 'Created Date',
-            'publish_date' => 'Publish Date',
-            'updated_date' => 'Updated Date',
-            'views' => 'Views',
-            'active' => 'Active',
+            'id' => Module::t('general', 'ID'),
+            'title' => Module::t('general', 'Title'),
+            'alias' => Module::t('general', 'Alias'),
+            'desciption' => Module::t('general', 'Desciption'),
+            'content' => Module::t('general', 'Content'),
+            'category_id' => Module::t('general', 'Category'),
+            'image' => Module::t('general', 'Image'),
+            'meta_title' => Module::t('general', 'Meta Title'),
+            'meta_desciption' => Module::t('general', 'Meta Desciption'),
+            'created_by' => Module::t('general', 'Created By'),
+            'created_date' => Module::t('general', 'Created Date'),
+            'publish_date' => Module::t('general', 'Publish Date'),
+            'updated_date' => Module::t('general', 'Updated Date'),
+            'views' => Module::t('general', 'Views'),
+            'active' => Module::t('general', 'Active'),
         ];
     }
 }

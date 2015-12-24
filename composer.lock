@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "20ba1dbcd80962093b6ac72964b9d49b",
-    "content-hash": "0e18598a87bf94b0e4540d48a7064a8c",
+    "hash": "0d3fa7f8b4bdc6106b4b4b62f26bcd9d",
+    "content-hash": "7763dafb0dee65937525ab0acacc8f7f",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -532,6 +532,52 @@
             "time": "2015-11-12 13:51:40"
         },
         {
+            "name": "mailchimp/mailchimp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/mailchimp/mailchimp-api-php.git",
+                "reference": "03ae0dba64d1a902fb4d76004ef12c8391ededc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/mailchimp/mailchimp-api-php/get/03ae0dba64d1a902fb4d76004ef12c8391ededc8.zip",
+                "reference": "03ae0dba64d1a902fb4d76004ef12c8391ededc8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "apigen/apigen": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mailchimp": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "MailChimp Devs",
+                    "email": "api@mailchimp.com",
+                    "homepage": "http://mailchimp.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "API client library for the MailChimp bulk email as a service platform",
+            "homepage": "https://bitbucket.org/mailchimp/mailchimp-api-php",
+            "keywords": [
+                "api",
+                "email"
+            ],
+            "time": "2015-03-23 22:00:25"
+        },
+        {
             "name": "moment/moment",
             "version": "2.10.6",
             "source": {
@@ -638,12 +684,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "bf175028d258f510781486def8fcb3eec1887e29"
+                "reference": "ea7bb516f17c5f7802eb7c9ed4c3569b5c1d210e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/bf175028d258f510781486def8fcb3eec1887e29",
-                "reference": "bf175028d258f510781486def8fcb3eec1887e29",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/ea7bb516f17c5f7802eb7c9ed4c3569b5c1d210e",
+                "reference": "ea7bb516f17c5f7802eb7c9ed4c3569b5c1d210e",
                 "shasum": ""
             },
             "require": {
@@ -690,7 +736,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-12-07 21:15:00"
+            "time": "2015-12-22 08:23:03"
         },
         {
             "name": "robloach/component-installer",
@@ -795,25 +841,25 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.0.0",
+            "version": "v2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "01383ed02a1020759bc8ee5d975fcec04ba16fbf"
+                "reference": "1b988a88e3551102f3c2d9e1d47a18c3a78d6312"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/01383ed02a1020759bc8ee5d975fcec04ba16fbf",
-                "reference": "01383ed02a1020759bc8ee5d975fcec04ba16fbf",
+                "url": "https://api.github.com/repos/symfony/process/zipball/1b988a88e3551102f3c2d9e1d47a18c3a78d6312",
+                "reference": "1b988a88e3551102f3c2d9e1d47a18c3a78d6312",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.3.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "2.8-dev"
                 }
             },
             "autoload": {
@@ -840,7 +886,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2015-11-30 12:36:17"
+            "time": "2015-11-30 12:35:10"
         },
         {
             "name": "yiisoft/yii2",
@@ -1438,7 +1484,8 @@
     "stability-flags": {
         "mpdf/mpdf": 20,
         "yiisoft/yii2-imagine": 20,
-        "phpmailer/phpmailer": 20
+        "phpmailer/phpmailer": 20,
+        "mailchimp/mailchimp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

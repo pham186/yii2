@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\widgets\FileManager;
 use app\widgets\tinymce\TinyMCE;
 
 /* @var $this yii\web\View */
@@ -19,12 +20,14 @@ use app\widgets\tinymce\TinyMCE;
 
         <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'desciption')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'desciption')->textarea(['maxlength' => true]) ?>
 
         <?= TinyMCE::widget(['model'=>$model,'field'=>'content','mode'=>'advanced']); ?>
 
         <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->all(), 'id', 'FullTitle')) ?>
-
+       
+        <?= FileManager::widget(['model'=>$model, 'field'=>'image']); ?>
+        
         <?= $form->field($model, 'meta_title')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'meta_desciption')->textInput(['maxlength' => true]) ?>
