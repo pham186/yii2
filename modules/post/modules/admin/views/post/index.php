@@ -4,11 +4,6 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\modules\post\Module;
 use app\widgets\FileManager;
-use yii\authclient\OAuth2;
-$oauthClient = new OAuth2();
-$url = $oauthClient->buildAuthUrl(); // Build authorization URL
-
-echo $url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\post\models\PostSearch */

@@ -110,7 +110,7 @@ class TinyMCE extends Widget
         }
         $tinyinit .= ',external_filemanager_path:"'.\Yii::$app->homeUrl.'widgets/filemanager/",
             filemanager_title:"Responsive Filemanager" ,
-            external_plugins: { "filemanager" : "'.\Yii::$app->homeUrl.'widgets/filemanager/plugin.min.js"},relative_urls: false';
+            external_plugins: { "filemanager" : "'.\Yii::$app->homeUrl.'widgets/filemanager/plugin.min.js"},relative_urls: true,document_base_url : "'.\Yii::$app->homeUrl.'"';
         $this->view->registerJs('tinymce.init({'.$tinyinit.'});');
     }
     

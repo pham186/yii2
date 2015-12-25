@@ -146,11 +146,11 @@ $config = array(
 	//Show or not show sorting feature in filemanager
 	'show_sorting_bar'                        => true,
 	//active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
-	'transliteration'                         => false,
+	'transliteration'                         => true,
 	//convert all spaces on files name and folders name with $replace_with variable
-	'convert_spaces'                          => false,
+	'convert_spaces'                          => true,
 	//convert all spaces on files name and folders name this value
-	'replace_with'                            => "_",
+	'replace_with'                            => "-",
 
 	// -1: There is no lazy loading at all, 0: Always lazy-load images, 0+: The minimum number of the files in a directory
 	// when lazy loading should be turned on.

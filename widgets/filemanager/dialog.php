@@ -1,5 +1,11 @@
 <?php
 $config = include 'config/config.php';
+$config = array_merge(array(
+    'base_url' => isset($_GET['base_url'])?$_GET['base_url']:$config['base_url'],
+    'upload_dir' => isset($_GET['base_url'])?$_GET['upload_dir']:$config['upload_dir'],
+    'current_path' => isset($_GET['current_path'])?$_GET['current_path']:$config['current_path'],
+    'thumbs_base_path' => isset($_GET['thumbs_base_path'])?$_GET['thumbs_base_path']:$config['thumbs_base_path'],
+), $config);
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
 
