@@ -49,12 +49,14 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        $search = \ZendSearch\Lucene\Lucene::open('data');
         return $this->render('index');
     }
 
     public function actionLogin()
     {
-        var_dump(\Yii::$app->user->getIdentity());
+        //var_dump(\Yii::$app->user->getIdentity());
+        echo Yii::$app->request->referrer;
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -92,5 +94,16 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+    
+    public function actionError()
+    {
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null) {
+            if($exception->getCode() == 404) {
+                return $this->render('404', ['exception' => $exception]);
+            }
+            return $this->render('error', ['exception' => $exception]);
+        }
     }
 }
