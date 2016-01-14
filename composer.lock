@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b2748148817c9844d46184b63f622ed6",
-    "content-hash": "d4867c8741f15aaf97a0d2805f4ad1f1",
+    "hash": "385edadf9fb8a22db6a71c4f04065a92",
+    "content-hash": "e7ba51d6e7381986bc22cc1d10a40f30",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -688,7 +688,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/ea7bb516f17c5f7802eb7c9ed4c3569b5c1d210e",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/47f66d3aacd65a14023afc2bd7b96398852de4e4",
                 "reference": "ea7bb516f17c5f7802eb7c9ed4c3569b5c1d210e",
                 "shasum": ""
             },
@@ -1218,6 +1218,98 @@
                 "yii2"
             ],
             "time": "2015-05-10 22:12:32"
+        },
+        {
+            "name": "zendframework/zend-stdlib",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-stdlib.git",
+                "reference": "cc8e90a60dd5d44b9730b77d07b97550091da1ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cc8e90a60dd5d44b9730b77d07b97550091da1ae",
+                "reference": "cc8e90a60dd5d44b9730b77d07b97550091da1ae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.7.*",
+                "phpunit/phpunit": "~4.0",
+                "zendframework/zend-config": "~2.5",
+                "zendframework/zend-eventmanager": "~2.5",
+                "zendframework/zend-filter": "~2.5",
+                "zendframework/zend-inputfilter": "~2.5",
+                "zendframework/zend-serializer": "~2.5",
+                "zendframework/zend-servicemanager": "~2.5"
+            },
+            "suggest": {
+                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+                "zendframework/zend-filter": "To support naming strategy hydrator usage",
+                "zendframework/zend-serializer": "Zend\\Serializer component",
+                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev",
+                    "dev-develop": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Stdlib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-stdlib",
+            "keywords": [
+                "stdlib",
+                "zf2"
+            ],
+            "time": "2015-06-03 15:32:03"
+        },
+        {
+            "name": "zendframework/zendsearch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/ZendSearch.git",
+                "reference": "c8de2508d3413bf9d701b40c1092c1ffbdd8fc63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/ZendSearch/zipball/c8de2508d3413bf9d701b40c1092c1ffbdd8fc63",
+                "reference": "c8de2508d3413bf9d701b40c1092c1ffbdd8fc63",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ZendSearch": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "a general purpose text search engine written entirely in PHP 5",
+            "homepage": "http://packages.zendframework.com/",
+            "keywords": [
+                "lucene",
+                "zf2"
+            ],
+            "time": "2015-01-21 16:24:14"
         }
     ],
     "packages-dev": [
@@ -1534,7 +1626,8 @@
         "yiisoft/yii2-imagine": 20,
         "phpmailer/phpmailer": 20,
         "mailchimp/mailchimp": 20,
-        "yiisoft/yii2-authclient": 20
+        "yiisoft/yii2-authclient": 20,
+        "zendframework/zendsearch": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

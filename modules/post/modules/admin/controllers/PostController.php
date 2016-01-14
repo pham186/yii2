@@ -40,6 +40,7 @@ class PostController extends Controller
                     ],
                 ],
                 'denyCallback' => function($rule, $action) {
+                    return $this->redirect(['/site/login']);
                     throw new HttpException(403, Yii::t('yii','Login Required'));
                 }
             ],

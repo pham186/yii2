@@ -23,7 +23,8 @@
         "phpmailer/phpmailer": "dev-master",
         "eonasdan/bootstrap-datetimepicker": "4.17.37",
         "mailchimp/mailchimp": "dev-master",
-        "yiisoft/yii2-authclient": "dev-master"
+        "yiisoft/yii2-authclient": "dev-master",
+        "zendframework/zendsearch": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
