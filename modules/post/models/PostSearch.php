@@ -18,9 +18,10 @@ class PostSearch extends Post
     public function rules()
     {
         return [
-            [['id', 'category', 'created_by', 'created_date', 'publish_date', 'updated_date', 'views'], 'integer'],
-            [['title', 'alias', 'desciption', 'content', 'meta_title', 'meta_desciption'], 'safe'],
+            [['content'], 'string'],
+            [['category_id', 'created_by', 'views'], 'integer'],
             [['active'], 'boolean'],
+            [['title', 'alias', 'desciption', 'image', 'meta_title', 'meta_desciption'], 'string', 'max' => 255]
         ];
     }
 
@@ -58,7 +59,7 @@ class PostSearch extends Post
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'category' => $this->category,
+            'category_id' => $this->category_id,
             'created_by' => $this->created_by,
             'created_date' => $this->created_date,
             'publish_date' => $this->publish_date,

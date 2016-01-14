@@ -20,6 +20,12 @@ $config = [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => ['@app/views' => '@app/themes/admin'],
+                'baseUrl' => '@web/themes/admin',
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
             'cachePath' => 'cache',

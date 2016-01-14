@@ -11,16 +11,15 @@ use app\widgets\FileManager;
 
 $this->title = Module::t('general', 'Posts');
 $this->params['breadcrumbs'][] = $this->title;
+$this->params['menuAction'] = [
+    ['label' => Module::t('general', 'Create Post'), 'url' => ['create'], 'options' => ['class' => 'aui-button']],
+];
+$this->params['_modelSearch'] = $this->render('_search', ['model' => $searchModel]);
 ?>
-<?= FileManager::widget(); ?>
 <div class="post-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Post', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -49,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_by',
             [ 
                 'attribute' => 'created_date',
-                'format' => ['date', 'php:h:i:sA d-m-Y'],
+                'format' => ['date', 'php:H:i:s d-m-Y'],
                 'label' => Module::t('general', 'Created Date'),
             ],
 //             'publish_date:date, H\:i\:s:abc',

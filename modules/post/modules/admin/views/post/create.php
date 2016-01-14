@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\modules\post\Module;
 
 
 /* @var $this yii\web\View */
@@ -9,6 +10,9 @@ use yii\helpers\Html;
 $this->title = 'Create Post';
 $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$this->params['menuAction'] = [
+    ['label' => Module::t('general', 'List Post'), 'url' => ['index'], 'options' => ['class' => 'aui-button']],
+];
 ?>
 <div class="post-create">
 

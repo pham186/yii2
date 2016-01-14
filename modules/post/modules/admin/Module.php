@@ -11,7 +11,9 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-
+        $this->layoutPath = \Yii::getAlias('@app/themes/admin/views/layouts/');
+        $this->layout = 'main';
+//        \Yii::$app->view->theme->baseUrl = '@web/themes/admin';
         // custom initialization code goes here
     }
 }

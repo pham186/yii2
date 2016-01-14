@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\modules\post\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\post\models\Post */
