@@ -23,6 +23,7 @@ return [
     'Created Date' => 'Ngày tạo',
     'Views' => 'Lượt xem',
     'Active' => 'Kích hoạt',
+    'Create Post' => 'Tạo bài viết',
     'The category not found.' => 'Không tìm thấy mục',
     'Create post successfull' => 'Thêm mới bài viết thành công',
     'Update post successfull' => 'Cập nhật bài viết thành công',

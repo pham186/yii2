@@ -55,7 +55,7 @@ class PostController extends Controller
     public function actionIndex()
     {
         $searchModel = new PostSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
         
         //setlocale(LC_ALL, 'en_US.UTF-8');
         setlocale(LC_CTYPE, 'ru_RU.UTF-8');
