@@ -21,6 +21,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Post', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    
+    <?php 
+        foreach ($search as $hit) {
+            echo $hit->id;
+            echo $hit->title;
+            echo $query->highlightMatches($hit->contents, 'UTF-8');
+            echo '<br/>';
+            //secho $hit->author;
+        }
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

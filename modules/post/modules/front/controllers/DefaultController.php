@@ -39,7 +39,7 @@ class DefaultController extends Controller
         $cache->keyPrefix = 'post-';
         $data = $cache->get('post_'.$id);
         if ($data === false) {
-            $post = Post::find(['id'=>$id,'alias'=>$alias])->with('category')->all();
+            $post = Post::findOne(['id'=>$id,'alias'=>$alias]);
             if($post) {
                 $data = $post;
                 $cache->set('post_'.$id, $data);
@@ -47,7 +47,8 @@ class DefaultController extends Controller
                 throw new NotFoundHttpException('Post not found');
             }
         }
-        \Yii::$app->view->title = $data[0]->title;
-        return $this->render('view', ['post'=>$data[0]]);
+        //var_dump($data);die();
+        \Yii::$app->view->title = $data->title;
+        return $this->render('view', ['post'=>$data]);
     }
 }

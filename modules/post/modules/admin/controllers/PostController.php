@@ -14,6 +14,7 @@ use yii\helpers\StringHelper;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
+use ZendSearch\Lucene;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -55,10 +56,49 @@ class PostController extends Controller
     {
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        //setlocale(LC_ALL, 'en_US.UTF-8');
+        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
+        //Lucene\Lucene::setDefaultSearchField('contents');
+        Lucene\Search\QueryParser::setDefaultEncoding('UTF-8');
+        Lucene\Analysis\Analyzer\Analyzer::setDefault(new Lucene\Analysis\Analyzer\Common\Utf8\CaseInsensitive());
+        Lucene\Lucene::setResultSetLimit(10);
+        
 
+        // create blog posts index located in /data/posts_index ,make sure the folder is writable
+        $index = Lucene\Lucene::create('data/posts_index');
+
+        $posts = Post::find()->all();
+        //var_dump($posts);die();
+        // iterate through posts and build the index
+        foreach ($posts as $p) {
+            $doc = new Lucene\Document();
+            $doc->addField(Lucene\Document\Field::UnIndexed('entry_id', $p->id));
+            $doc->addField(Lucene\Document\Field::Keyword('title', $p->title));
+            $doc->addField(Lucene\Document\Field::text('contents', $p->content));
+            $index->addDocument($doc);
+        }
+        // commit the index
+        $index->commit();
+        //Lucene\Analysis\Analyzer\Analyzer::setDefault(new Lucene\Analysis\Analyzer\Common\Utf8\CaseInsensitive());
+        // explode the search query to individual words
+        $words = explode(' ', urldecode(Yii::$app->getRequest()->getQueryParam('q')));
+        // start a search query and add a term for each word to it
+        $query = new Lucene\Search\Query\MultiTerm();
+        foreach ($words as $w) {
+            $query->addTerm(new Lucene\Index\Term($w));
+        }
+
+        // open and query the index
+        $index = Lucene\Lucene::open('data/posts_index');
+        $results = $index->find($query); // the search results
+        //var_dump($results);
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'search' => $results,
+            'query' => $query
         ]);
     }
 
