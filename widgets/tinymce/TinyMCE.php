@@ -198,6 +198,7 @@ class TinyMCE extends Widget
         }
         $this->options['external_filemanager_path'] = Yii::$app->homeUrl.'widgets/filemanager/';
         $this->options['filemanager_title'] = 'Responsive Filemanager';
+        $this->options['filemanager_access_key'] = 'b9a360fddcb55294c9334279352836b4';
         $this->options['external_plugins']['filemanager'] = Yii::$app->homeUrl.'widgets/filemanager/plugin.min.js';
         
         $tinyinit = '';

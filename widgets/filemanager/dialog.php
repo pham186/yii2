@@ -1,4 +1,9 @@
 <?php
+require(dirname(__FILE__) . '/../../vendor/yiisoft/yii2/Yii.php');
+$yiiConfig = require(dirname(__FILE__) . '/../../config/web.php');
+new yii\web\Application($yiiConfig);
+//var_dump(\Yii::$app->params);
+
 $config = include 'config/config.php';
 $config = array_merge(array(
     'base_url' => isset($_GET['base_url'])?$_GET['base_url']:$config['base_url'],

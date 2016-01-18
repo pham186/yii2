@@ -21,7 +21,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 |
 */
 
-define('USE_ACCESS_KEYS', false); // TRUE or FALSE
+define('USE_ACCESS_KEYS', true); // TRUE or FALSE
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ $config = array(
 	|
 	*/
 
-	'access_keys' => array(),
+	'access_keys' => array('b9a360fddcb55294c9334279352836b4'),
 
 	//--------------------------------------------------------------------------------------------------------
 	// YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS
