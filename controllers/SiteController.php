@@ -49,7 +49,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $search = \ZendSearch\Lucene\Lucene::open('data');
         return $this->render('index');
     }
 

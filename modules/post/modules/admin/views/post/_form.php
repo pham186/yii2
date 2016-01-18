@@ -22,11 +22,11 @@ use app\widgets\tinymce\TinyMCE;
 
         <?= $form->field($model, 'desciption')->textarea(['maxlength' => true]) ?>
 
-        <?= TinyMCE::widget(['model'=>$model,'field'=>'content','mode'=>'advanced']); ?>
+        <?= TinyMCE::widget(['model'=>$model, 'attribute'=>'content','mode'=>'advanced', 'options'=>['height'=>400]]); ?>
 
         <?= $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map(app\modules\post\models\Category::find()->all(), 'id', 'FullTitle')) ?>
        
-        <?= FileManager::widget(['model'=>$model, 'field'=>'image']); ?>
+        <?= FileManager::widget(['model'=>$model, 'attribute'=>'image']); ?>
         
         <?= $form->field($model, 'meta_title')->textInput(['maxlength' => true]) ?>
 

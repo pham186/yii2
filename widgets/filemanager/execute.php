@@ -77,19 +77,21 @@ if (isset($_GET['action']))
                 unlink($path);
                 if (file_exists($path_thumb)) unlink($path_thumb);
 
-                $info=pathinfo($path);
+                
+                $info=pathinfo($path_thumb);
                 if ($relative_image_creation){
                     foreach($relative_path_from_current_pos as $k=>$path)
                     {
-                        if ($path!="" && $path[strlen($path)-1]!="/") $path.="/";
+                        if ($path_thumb!="" && $path_thumb[strlen($path)-1]!="/") $path_thumb.="/";
 
-                        if (file_exists($info['dirname']."/".$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension']))
+                        if (file_exists($info['dirname']."/".$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension']))
                         {
-                            unlink($info['dirname']."/".$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension']);
+                            unlink($info['dirname']."/".$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension']);
                         }
                     }
                 }
-
+                
+                $info=pathinfo($path);
                 if ($fixed_image_creation)
                 {
                     foreach($fixed_path_from_filemanager as $k=>$path)

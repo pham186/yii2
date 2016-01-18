@@ -7,8 +7,10 @@
  */
 namespace app\widgets;
 
-use yii\base\View;
+use Yii;
+//use yii\base\View;
 use yii\base\Widget;
+use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use app\assets\FancyBoxAsset;
 
@@ -24,11 +26,13 @@ class FileManager extends Widget
     
     public $buttonText = 'Open file manager';
     
+    public $htmlOptions = [];
+    
     public $model;
     
     protected $modelClass;
 
-    public $field;
+    public $attribute;
     
     public $label;
     
@@ -40,55 +44,65 @@ class FileManager extends Widget
         parent::init();
         $view = $this->view;
 //        $view->registerAssetBundle('app\assets\FancyBoxAsset');
-        if($this->model && $this->field) {
-            $model = $this->model;
-            $this->modelClass = StringHelper::basename($model::className());
-            $this->inputId = strtolower($this->modelClass).'-'.$this->field;
-        }
+//        if($this->model && $this->attribute) {
+//            $model = $this->model;
+//            $this->modelClass = StringHelper::basename($model::className());
+//            $this->inputId = strtolower($this->modelClass).'-'.$this->attribute;
+//        }
         
-        if(empty($this->label) && $this->field) {
-            $this->label = $model->getAttributeLabel($this->field);
-        }
+//        if(empty($this->label) && $this->attribute) {
+//            $this->label = $model->getAttributeLabel($this->attribute);
+//        }
         FancyBoxAsset::register($view);
+        $this->htmlOptions['class'] = 'form-control';
         $view->registerJs('
         $(".fancybox").fancybox({
             autoSize : false,
             width : 900,
             height : 600,
             type : \'iframe\',
-            autoScale : false
+            autoScale : false,
+            helpers: {
+                overlay: {
+                    locked: false
+                }
+            }
         });', $view::POS_READY);
         if($this->preview) {
             $view->registerJs('
-            function responsive_filemanager_callback(field_id){
-                console.log(field_id);
-                var url=jQuery(\'#\'+field_id).val();
-                if(jQuery(\'#'.$this->previewID.'\').length == 0) {
-                    jQuery(\'#\'+field_id).after(\'<div id="'.$this->previewID.'"></div>\');
+            function responsive_filemanager_callback(attribute_id){
+                console.log(attribute_id);
+                var url=jQuery(\'#\'+attribute_id).val();
+                if(jQuery(\'#'.$this->previewID.'_\'+attribute_id).length == 0) {
+                    jQuery(\'#\'+attribute_id).after(\'<div id="'.$this->previewID.'_\'+attribute_id+\'"></div>\');
                 }
-                jQuery(\'#'.$this->previewID.'\').html(\'<img src="'.\Yii::$app->homeUrl.'resources/uploads/\'+url+\'">\');
+                jQuery(\'#'.$this->previewID.'_\'+attribute_id).html(\'<img src="'.\Yii::$app->homeUrl.'resources/thumbs/\'+url+\'">\');
             }', $view::POS_HEAD);
         }
     }
     
     public function run() {
-        $output = '';
-        $value = '';
-        $name = $this->inputId;
-        if($this->inputId) {
-            $class = !empty($this->inputClass)?' class="'.$this->inputClass.'"':'';
-            if($this->model && $this->field) {
-                $name = $this->modelClass.'['.$this->field.']';
-                $value = $this->model->{$this->field};
-            }
-            if($this->inputType != 'hidden') {
-                $output .= '<label class="control-label" for="'.strtolower($this->modelClass).'-'.$this->field.'">'.$this->label.'</label>';
-            }
-            if($this->inputId) {
-                $output .= '<input'.$class.' id="'.$this->inputId.'" name="'.$name.'" type="'.$this->inputType.'" value="'.$value.'"/>';
-            }
+//        $output = '';
+//        $value = '';
+//        $name = $this->inputId;
+//        if($this->inputId) {
+//            $class = !empty($this->inputClass)?' class="'.$this->inputClass.'"':'';
+//            if($this->model && $this->attribute) {
+//                $name = $this->modelClass.'['.$this->attribute.']';
+//                $value = $this->model->{$this->attribute};
+//            }
+////            if($this->inputType != 'hidden') {
+////                $output .= '<label class="control-label" for="'.strtolower($this->modelClass).'-'.$this->attribute.'">'.$this->label.'</label>';
+////            }
+//            if($this->inputId) {
+//                $output .= '<input'.$class.' id="'.$this->inputId.'" name="'.$name.'" type="'.$this->inputType.'" value="'.$value.'"/>';
+//            }
+//        }
+        if($this->model && $this->attribute) {
+            return Html::activeTextInput($this->model, $this->attribute, $this->htmlOptions).'<a class="fancybox '.$this->cssClass.'" href="'.Yii::$app->homeUrl.'widgets/filemanager/dialog.php?type=1&field_id='.Html::getInputId($this->model, $this->attribute).'&relative_url=1" onclick="return false;">'.$this->buttonText.'</a>';
+        } else {
+            return '<a class="fancybox '.$this->cssClass.'" href="'.Yii::$app->homeUrl.'widgets/filemanager/dialog.php?type=1'.($this->inputId?'&field_id='.$this->inputId:'').'&relative_url=1">'.$this->buttonText.'</a>';
         }
-        return $output.'<a class="fancybox '.$this->cssClass.'" href="'.\Yii::$app->homeUrl.'widgets/filemanager/dialog.php?type=1'.($this->inputId?'&field_id='.$this->inputId:'').'&relative_url=1">'.$this->buttonText.'</a>';
     }
 }
 

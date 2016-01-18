@@ -259,7 +259,7 @@ $config = array(
 	 *******************/
 	'aviary_active'                           => true,
 	'aviary_apiKey'                           => "2444282ef4344e3dacdedc7a78f8877d",
-	'aviary_language'                         => "en",
+	'aviary_language'                         => "vi",
 	'aviary_theme'                            => "light",
 	'aviary_tools'                            => "all",
 	'aviary_maxSize'                          => "1400",
@@ -281,7 +281,7 @@ $config = array(
 	/*******************
 	 * JAVA upload
 	 *******************/
-	'java_upload'                             => true,
+	'java_upload'                             => false,
 	'JAVAMaxSizeUpload'                       => 200, //Gb
 
 
@@ -318,10 +318,10 @@ $config = array(
 	// just simply add a value in the array
 	// The image creation path is always relative so if i'm inside source/test/test1 and I upload an image, the path start from here
 	//
-	'relative_image_creation'                 => false, //activate or not the creation of one or more image resized with relative path from upload folder
+	'relative_image_creation'                 => true, //activate or not the creation of one or more image resized with relative path from upload folder
 	'relative_path_from_current_pos'          => array( './', './' ), //relative path of the image folder from the current position on upload folder
 	'relative_image_creation_name_to_prepend' => array( '', '' ), //name to prepend on filename
-	'relative_image_creation_name_to_append'  => array( '_thumb', '_thumb1' ), //name to append on filename
+	'relative_image_creation_name_to_append'  => array( '-300x200.thumb', '-400.thumb' ), //name to append on filename
 	'relative_image_creation_width'           => array( 300, 400 ), //width of image (you can leave empty if you set height)
 	'relative_image_creation_height'          => array( 200, '' ), //height of image (you can leave empty if you set width)
 	/*
@@ -331,7 +331,7 @@ $config = array(
 	#                          3 / auto = auto;
 	#                          4 / crop= resize and crop;
 	 */
-	'relative_image_creation_option'          => array( 'crop', 'crop' ), //set the type of the crop
+	'relative_image_creation_option'          => array( 'crop', 'auto' ), //set the type of the crop
 
 
 	// Remember text filter after close filemanager for future session
