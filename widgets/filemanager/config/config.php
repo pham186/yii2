@@ -3,6 +3,12 @@ session_start();
 mb_internal_encoding('UTF-8');
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
+require_once(dirname(__FILE__) . '/../../../vendor/yiisoft/yii2/Yii.php');
+$yiiConfig = require_once(dirname(__FILE__) . '/../../../config/web.php');
+new yii\web\Application($yiiConfig);
+$param = \Yii::$app->params;
+$filemanagerParam = isset($param['filemanager'])?$param['filemanager']:array();
+
 /*
 |--------------------------------------------------------------------------
 | Optional security
@@ -56,7 +62,7 @@ $config = array(
 	|
 	*/
 
-	'base_url' => ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && ! in_array(strtolower($_SERVER['HTTPS']), array( 'off', 'no' ))) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/yii2',
+	'base_url' => \yii\helpers\Url::base(true),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -359,5 +365,6 @@ return array_merge(
 			'tools'      => $config['aviary_tools'],
 			'maxSize'    => $config['aviary_maxSize']
 		),
-	)
+	),
+        $filemanagerParam
 );
